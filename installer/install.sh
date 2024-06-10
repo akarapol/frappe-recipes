@@ -46,12 +46,12 @@ fi
 set_color
 
 main() {
-  update_system
   # check_variables
   case "${TYPE}" in
     dev)
       clear_screen
       STATUS_MSG+=$(print_header "Setup Frappe Dev server")
+      update_system
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
       install_bench && install_frappe
@@ -59,6 +59,7 @@ main() {
     aio)
       clear_screen
       STATUS_MSG+=$(print_header "Setup Frappe All-in-one server")
+      update_system
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
       install_bench && install_frappe
@@ -66,6 +67,7 @@ main() {
     app)
       clear_screen
       STATUS_MSG+=$(print_header "Setup Frappe App server")
+      update_system
       install_library && install_git && install_nvm && install_python
       install_mariadb_client
       install_bench && install_frappe
@@ -73,6 +75,7 @@ main() {
     db)
       clear_screen
       STATUS_MSG+=$(print_header "Setup Frappe DB server")
+      update_system
       install_redis && install_mariadb
       ;;
     *)
