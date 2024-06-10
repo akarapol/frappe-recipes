@@ -61,8 +61,7 @@ print_header() {
   printf "%s\n%s\n%s\n" \
     $(printf -- "-%.0s" {1..60}) \
     "${1}" \
-    $(printf -- "-%.0s" {1..60}) \
-    "\n"
+    $(printf -- "-%.0s" {1..60})
 }
 
 divider() {
