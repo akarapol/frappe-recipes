@@ -5,26 +5,25 @@ set -eu
 # ************************************************************ #
 # USER VARIABLES                                             #
 # ************************************************************ #
-GIT_VERSION=
-NODE_VERSION=
-PYTHON_VERSION=
-MARIADB_VERSION=
+GIT_VERSION= #2.43.0
+NODE_VERSION= #20.11.0
+PYTHON_VERSION= #3.12.0
+MARIADB_VERSION= #10.11
 
-BENCH_VERSION=
-FRAPPE_VERSION=
-INSTALL_DIR=
-FRAPPE_ADMIN_PASSWORD=
+BENCH_VERSION= #5.22
+FRAPPE_VERSION= #version-15
+INSTALL_DIR= #"$HOME/opt"
+FRAPPE_ADMIN_PASSWORD= #"1234"
 
-DB_TYPE= # [mariadb, postgres]
-DB_HOST=
-DB_NAME=
-DB_ROOT_USERNAME=
-DB_ROOT_PASSWORD=
+DB_TYPE= #[mariadb, postgres]
+DB_HOST= #"localhost"
+DB_ROOT_USERNAME= #"root"
+DB_ROOT_PASSWORD= #"1234"
 
-REPO_MODE= # [ssh, token]
-REPO_URI= # your.server.domain
-REPO_SSH_KEY= # /absolute/path/to/private.key
-REPO_TOKEN= # username@token
+REPO_MODE= #[ssh, token]
+REPO_URI= #your.server.domain
+REPO_SSH_KEY= #/absolute/path/to/private.key
+REPO_TOKEN= #username@token
 
 # ************************************************************ #
 # GLOBAL VARIABLES                                             #
