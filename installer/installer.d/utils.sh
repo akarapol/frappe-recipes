@@ -15,15 +15,14 @@ set_color() {
 }
 
 clear_screen() {
-  printf "\033c${STATUS_MSG}"
-  printf "${reset}\n"
+  printf "\033c${STATUS_MSG}${reset}\n"
 }
 
 say() {
   local msg="${1}"
 
   if [[ $# -eq 1 ]]; then
-    printf "%s\n" ${msg}
+    printf "\n%s" ${msg}
   else
     local level="${2}"
 
@@ -37,31 +36,29 @@ say() {
       warn) color="${yellow}" ;;
       error) color="${red}" ;;
     esac
-    printf "${color}${msg}${reset}\n"
+    printf "${color}${msg}${reset}"
   fi
 }
 
 info() {
-  say "\u2139 $1" "info"
+  say "\n\u2139 $1" "info"
 }
 
 warning() {
-  say "\u26A0 $1" "warn"
+  say "\n\u26A0 $1" "warn"
 }
 
 error() {
-  say "\u274C $1" "error"
+  say "\n\u274C $1" "error"
 }
 
 success() {
-  say "\u2714 $1" "success"
+  say "\n\u2714 $1" "success"
 }
 
-print_header() {  
-  printf "%s\n%s\n%s\n" \
-    $(printf -- "-%.0s" {1..60}) \
-    "${1}" \
-    $(printf -- "-%.0s" {1..60})
+print_header() {
+    printf "%s\n%s\n%s\n" \
+      $(divider) "${1}" $(divider)
 }
 
 divider() {

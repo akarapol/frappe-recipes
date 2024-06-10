@@ -50,7 +50,7 @@ main() {
   case "${TYPE}" in
     dev)
       clear_screen
-      STATUS_MSG+=$(print_header "Setup Frappe Dev server")
+      STATUS_MSG=$(print_header "Setup Frappe Dev server")
       update_system
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
@@ -58,7 +58,7 @@ main() {
       ;;
     aio)
       clear_screen
-      STATUS_MSG+=$(print_header "Setup Frappe All-in-one server")
+      STATUS_MSG=$(print_header "Setup Frappe All-in-one server")
       update_system
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
@@ -66,7 +66,7 @@ main() {
       ;;
     app)
       clear_screen
-      STATUS_MSG+=$(print_header "Setup Frappe App server")
+      STATUS_MSG=$(print_header "Setup Frappe App server")
       update_system
       install_library && install_git && install_nvm && install_python
       install_mariadb_client
@@ -74,13 +74,13 @@ main() {
       ;;
     db)
       clear_screen
-      STATUS_MSG+=$(print_header "Setup Frappe DB server")
+      STATUS_MSG=$(print_header "Setup Frappe DB server")
       update_system
       install_redis && install_mariadb
       ;;
     *)
       clear_screen
-      STATUS_MSG+=$(error "Wrong value for argument --type")
+      STATUS_MSG=$(error "Wrong value for argument --type")
       clear_screen
       exit 1
       ;;
@@ -88,12 +88,14 @@ main() {
 }
 
 if [ $# -eq 0 ]; then
-  error "No arguments provided!"
+  clear_screen
+  error "No arguments provided!\n"
   exit 1
 else
   extract_args "$@"
   if [[ -z "${TYPE}" ]]; then
-    error "Missing value for argument --type"
+    clear_screen
+    error "Missing value for argument --type\n"
     exit 1
   else
     main  

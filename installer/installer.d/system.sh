@@ -10,7 +10,7 @@ update_system() {
     apt update && apt upgrade -y &&
     apt autoclean -y && apt autoremove -y"
 
-  STATUS_MSG+=$(say "\n"; success "System update successful\n")
+  STATUS_MSG+=$(success "System update successful")
 }
 
 install_library() {
@@ -26,5 +26,5 @@ install_library() {
       libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev &&
     apt autoclean -y && apt autoremove -y"
 
-  STATUS_MSG+=$(success "Install libraries successful\n")
+  STATUS_MSG+=$(success "Install libraries successful")
 }
