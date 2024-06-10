@@ -46,7 +46,7 @@ fi
 set_color
 
 main() {
-  # check_variables
+  check_variables
   case "${TYPE}" in
     dev)
       clear_screen
