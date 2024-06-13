@@ -111,7 +111,8 @@ install_python() {
 
     python -m pip install --upgrade pip
     python -m pip install --upgrade setuptools
-    python -m pip install poetry && \
+    
+    sudo python -m pip install poetry && \
       poetry config virtualenvs.in-project true
 
     STATUS_MSG+=$(success "Install PYTHON successful")
