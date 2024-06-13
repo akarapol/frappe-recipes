@@ -65,15 +65,14 @@ install_python() {
   
   if exists python; then
     python_version=$(python --version 2>&1 | awk '{print $2}')
-    STATUS_MSG+=$(success " Python version ${python_version} already installed")
+    STATUS_MSG+=$(success "Python version ${python_version} already installed")
   else
     sudo su -c "
-      apt update &&
-      apt upgrade -y && 
+      apt update && apt upgrade -y && 
       apt install --no-install-recommends -y \
         libbz2-dev libncurses-dev libncursesw5-dev libgdbm-dev \
         liblzma-dev libsqlite3-dev libgdbm-compat-dev libreadline-dev &&
-      apt autoclean -y"
+      apt autoclean -y && apt autoremove -y"
 
     sudo su -c "
       cd /tmp
