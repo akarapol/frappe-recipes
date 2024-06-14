@@ -17,6 +17,7 @@ DB_ROOT_PASSWORD= #"1234"
 
 REPO_MODE= #[ssh, token]
 REPO_URI= #your.server.domain
+REPO_PORT= #22
 REPO_SSH_KEY= #/absolute/path/to/private.key
 REPO_TOKEN= #username@token
 

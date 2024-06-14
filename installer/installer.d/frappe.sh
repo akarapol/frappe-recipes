@@ -44,6 +44,7 @@ install_bench() {
       apt autoclean -y && apt autoremove -y"
       
     pip install frappe-bench=="${BENCH_VERSION}"
+    sudo pip install frappe-bench=="${BENCH_VERSION}"
   fi
   STATUS_MSG+=$(success "Install Bench successful")
 }
@@ -52,9 +53,10 @@ setup_repo() {
   if [ "${REPO_MODE}" = "ssh" ]; then
 
     if ! grep -iq "Host frappe-repo" ~/.ssh/config; then
-      printf "\n%s\n%s\n%s\n%s\n" \
+      printf "\n%s\n%s\n%s\n%s\n%s\n" \
         "HOST frappe-repo" \
         " HostName ${REPO_URI}" \
+        " Port ${REPO_PORT}" \
         " User git" \
         " IdentityFile ${REPO_SSH_KEY}" |
         tee -a ~/.ssh/config >/dev/null  
@@ -94,7 +96,7 @@ create_site() {
                 --db-root-username "${DB_ROOT_USERNAME}" \
                 --db-root-password "${DB_ROOT_PASSWORD}" \
                 --db-name "${SITE_DB_NAME}" \
-                --admin-password "${FRAPPE_ADMIN_PASSWORD}" \
+                --admin-password "${SITE_ADMIN_PASSWORD}" \
                 --verbose &&
   bench --site "${SITE}" add-to-hosts
   STATUS_MSG+=$(success "Create site ${SITE} for instance ${INSTANCE}")
@@ -109,7 +111,7 @@ install_app() {
 
     bench get-app "{app_name}" "${REPO_ADDR}/${app_name}" --branch ${app_branch} &&
     bench --site "${SITE}" install-app "${app_name}"
-    STATUS_MSG+=$(success "Get ${app_name} >> ${app_branch} and install to ${SITE}")
+    STATUS_MSG+=$(success "Get and install app ${app_name} branch ${app_branch} to ${SITE}")
   done
 }
 
