@@ -93,11 +93,13 @@ extract_args() {
 
 check_variables() {
   local err_msg=$(print_header "Check Variables")
+  local fail=0
   local variables=("GIT_VERSION" "NODE_VERSION" "PYTHON_VERSION" "MARIADB_VERSION")
-  variables+=("BENCH_VERSION" "FRAPPE_VERSION" "INSTALL_DIR" "FRAPPE_ADMIN_PASSWORD")
   variables+=("DB_TYPE" "DB_HOST" "DB_ROOT_USERNAME" "DB_ROOT_PASSWORD")
   variables+=("REPO_MODE" "REPO_URI" "REPO_SSH_KEY" "REPO_TOKEN")
-  local fail=0
+  variables+=("BENCH_VERSION" "FRAPPE_VERSION" "INSTALL_DIR")
+  variables+=("INSTANCE" "APP_LIST" "SITE" "SITE_DB_NAME" "SITE_ADMIN_PASSWORD")
+
   for variable in "${variables[@]}"; do
     if [[ -z "${!variable}" ]]; then
       err_msg+=$(error "Variable ${variable} must be defined")
