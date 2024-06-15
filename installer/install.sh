@@ -65,6 +65,7 @@ main() {
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
       install_bench && install_frappe
+      install_lazygit
       ;;
     aio)
       clear_screen
