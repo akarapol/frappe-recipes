@@ -86,8 +86,6 @@ create_instance() {
 
 create_site() {
   print_header "Setup site >> ${SITE}"
-  info "Create new site for instance ${INSTALL_DIR}/${INSTANCE}\n"
-  info "with site name ${SITE}\n\n"
 
   cd "${INSTALL_DIR}/${INSTANCE}" &&
   bench new-site "${SITE}" \
@@ -103,15 +101,15 @@ create_site() {
 }
 
 install_app() {
-  for app in "${APP_LIST}"; do
+  cd "${INSTALL_DIR}/${INSTANCE}"
+
+  for app in ${APP_LIST}; do
     local app_name="${app%%=*}"  # Extract key (everything before =)
     local app_branch="${app#*=}"  # Extract value (everything after =)
     
-    cd "${INSTALL_DIR}/${INSTANCE}"
-
     bench get-app "{app_name}" "${REPO_ADDR}/${app_name}" --branch ${app_branch} &&
     bench --site "${SITE}" install-app "${app_name}"
-    STATUS_MSG+=$(success "Get and install app ${app_name} branch ${app_branch} to ${SITE}")
+  	STATUS_MSG+=$(success "Install app ${app_name} branch ${app_branch}")
   done
 }
 
