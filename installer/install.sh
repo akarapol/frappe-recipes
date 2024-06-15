@@ -5,10 +5,10 @@ set -eu
 # ************************************************************ #
 # USER VARIABLES                                             #
 # ************************************************************ #
-GIT_VERSION= #2.43.0
-NODE_VERSION= #20.11.0
-PYTHON_VERSION= #3.12.0
-MARIADB_VERSION= #10.11
+GIT_VERSION= #"2.43.0"
+NODE_VERSION= #"20.11.0"
+PYTHON_VERSION= #"3.12.0"
+MARIADB_VERSION= #"10.11"
 
 DB_TYPE= #[mariadb, postgres]
 DB_HOST= #"localhost"
@@ -16,17 +16,17 @@ DB_ROOT_USERNAME= #"root"
 DB_ROOT_PASSWORD= #"1234"
 
 REPO_MODE= #[ssh, token]
-REPO_URI= #your.server.domain
-REPO_PORT= #22
-REPO_SSH_KEY= #/absolute/path/to/private.key
-REPO_TOKEN= #username@token
+REPO_URI= #"your.server.domain"
+REPO_PORT= #"22"
+REPO_SSH_KEY= #"$HOME/path/to/private.key"
+REPO_TOKEN= #"username@token"
 
-BENCH_VERSION= #5.22
-FRAPPE_VERSION= #version-15
+BENCH_VERSION= #"5.22"
+FRAPPE_VERSION= #"version-15"
 INSTALL_DIR= #"$HOME/opt"
 
 INSTANCE= #"frappe-15"
-APP_LIST= #("brew=develop")
+APP_LIST= #"erpnext=version-15 custom_app=branch_name"
 
 SITE= #"frappe-15.local"
 SITE_DB_NAME= #"frappe-15"
