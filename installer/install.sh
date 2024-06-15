@@ -43,6 +43,10 @@ TYPE=
 # ************************************************************ #
 # MAIN FUNCTION                                                #
 # ************************************************************ #
+if [ -f "${RUNNING_DIR}/.env" ]; then
+  source "${RUNNING_DIR}/.env"
+fi
+
 if [ -d "${RUNNING_DIR}" ]; then
   for file in "${RUNNING_DIR}"/installer.d/*.sh; do
     source "${file}"
