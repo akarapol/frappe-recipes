@@ -62,9 +62,9 @@ display_help() {
 
   printf "Usage: install.sh [OPTIONS] \n\n"
   printf "Arguments:\n"
-  printf "  -h, --help      Display this help message.\n"
-  printf "  -t, --type      Setup type (dev, aio, app, db).\n"
-  printf "  -i, --install   Install specific software (python, nvm, git).\n\n"
+  printf "  -h   Display this help message.\n"
+  printf "  -t   Setup type (dev, aio, app, db).\n"
+  printf "  -i   Install specific software (python, nvm, git).\n\n"
   printf "Examples:\n"
   printf "  ./install.sh\n"  # Display help message
   printf "  ./install.sh -t dev\n"  # Set up system in developer mode
@@ -111,7 +111,7 @@ shift $((OPTIND-1))
 
 # Validate if either mode or install item is provided
 if [[ -z "$TYPE" && -z "$INSTALL_ITEM" ]]; then
-  printf "Error: Missing argument. Specify either -t/--type or -i/--install.\n" >&2
+  printf "Error: Missing argument. Specify either -t or -i.\n" >&2
   display_help
   exit 1
 fi
