@@ -39,6 +39,7 @@ RUNNING_DIR=$(dirname -- "${0}")
 OS_NAME=$(grep "^NAME=" /etc/os-release | cut -d'=' -f2 | tr -d '"')
 STATUS_MSG=
 TYPE=
+INSTALL_ITEM=
 
 # ************************************************************ #
 # MAIN FUNCTION                                                #
@@ -54,18 +55,78 @@ if [ -d "${RUNNING_DIR}" ]; then
 fi
 
 set_color
+check_variables
 
-main() {
-  check_variables
-  case "${TYPE}" in
+# Display help message
+display_help() {
+
+  printf "Usage: install.sh [OPTIONS] \n\n"
+  printf "Arguments:\n"
+  printf "  -h, --help      Display this help message.\n"
+  printf "  -t, --type      Setup type (dev, aio, app, db).\n"
+  printf "  -i, --install   Install specific software (python, nvm, git).\n\n"
+  printf "Examples:\n"
+  printf "  ./install.sh\n"  # Display help message
+  printf "  ./install.sh -t dev\n"  # Set up system in developer mode
+  printf "  ./install.sh -i python\n"  # Install Python
+
+  warning "**Important:** Options -t (type) and -i (install) are mutually exclusive. You can only specify one at a time.\n\n"
+
+  exit 0
+}
+
+# Process arguments using getopts
+while getopts ":ht:i:" opt; do
+  case $opt in
+    h)
+      display_help
+      ;;
+    t)
+      TYPE="$OPTARG"
+      # Check if -i was already used
+      if [[ -n "$INSTALL_ITEM" ]]; then
+        printf "Error: Options -t and -i are mutually exclusive.\n" >&2
+        display_help
+        exit 1
+      fi
+      ;;
+    i)
+      INSTALL_ITEM="$OPTARG"
+      # Check if -m was already used
+      if [[ -n "$TYPE" ]]; then
+        printf "Error: Options -t and -i are mutually exclusive.\n" >&2
+        display_help
+        exit 1
+      fi
+      ;;
+    \?)
+      printf "Invalid option: -$OPTARG\n" >&2
+      display_help
+      ;;
+  esac
+done
+
+# Shift arguments to remove processed options
+shift $((OPTIND-1))
+
+# Validate if either mode or install item is provided
+if [[ -z "$TYPE" && -z "$INSTALL_ITEM" ]]; then
+  printf "Error: Missing argument. Specify either -t/--type or -i/--install.\n" >&2
+  display_help
+  exit 1
+fi
+
+# Implement setup logic based on mode or installation item (replace with your specific actions)
+if [[ -n "$TYPE" ]]; then
+  # Handle setup
+  case "$TYPE" in
     dev)
       clear_screen
       STATUS_MSG=$(print_header "Setup Frappe Dev server")
-      update_system
+      update_system && install_lazygit
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
       install_bench && install_frappe
-      install_lazygit
       ;;
     aio)
       clear_screen
@@ -91,25 +152,33 @@ main() {
       ;;
     *)
       clear_screen
-      STATUS_MSG=$(error "Wrong value for argument --type")
+      STATUS_MSG=$(error "Invalid setup mode: $TYPE")
       clear_screen
       exit 1
       ;;
   esac
-}
-
-if [ $# -eq 0 ]; then
-  clear_screen
-  error "No arguments provided!\n"
-  exit 1
 else
-  extract_args "$@"
-  if [[ -z "${TYPE}" ]]; then
-    clear_screen
-    error "Missing value for argument --type\n"
-    exit 1
-  else
-    main  
-  fi
-  clear_screen
+  # Handle installation
+  case "$INSTALL_ITEM" in
+    python)
+      STATUS_MSG=$(print_header "Install Python")
+      install_python
+      clear_screen
+      ;;
+    nvm)
+      STATUS_MSG=$(print_header "Install NVM, npm, nodejs, yarn")
+      install_nvm
+      clear_screen
+      ;;
+    git)
+      STATUS_MSG=$(print_header "Install Git")
+      install_git && install_lazygit
+      clear_screen
+      ;;
+    *)
+      STATUS_MSG=$(error "Invalid software to install: $INSTALL_ITEM")
+      clear_screen
+      exit 1
+      ;;
+  esac
 fi
