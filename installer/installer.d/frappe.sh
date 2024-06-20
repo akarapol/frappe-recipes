@@ -92,12 +92,22 @@ create_site() {
                 --admin-password "${SITE_ADMIN_PASSWORD}" \
                 --verbose &&
   bench --site "${SITE}" add-to-hosts
+
+  case "${TYPE}" in
+    dev)
+      enable_dev 
+      ;;
+    aio)  ;;
+    app)  ;;
+    *)    ;;
+  esac
+
   STATUS_MSG+=$(success "Create site ${SITE} for instance ${INSTANCE}")
 }
 
 install_app() {
   cd "${INSTALL_DIR}/${INSTANCE}"
-
+  setup_repo
   for app in ${APP_LIST}; do
     local app_name="${app%%=*}"  # Extract key (everything before =)
     local app_branch="${app#*=}"  # Extract value (everything after =)
@@ -145,15 +155,6 @@ install_frappe() {
   print_header "Install Frappe Version ${FRAPPE_VERSION}"
   setup_repo && create_instance && create_site && \
   install_app
-
-  case "${TYPE}" in
-    dev)
-      enable_dev 
-      ;;
-    aio)  ;;
-    app)  ;;
-    *)    ;;
-  esac
 
   STATUS_MSG+=$(success "Install Frappe successful")
 }
