@@ -96,7 +96,7 @@ check_variables() {
   local fail=0
   local variables=("GIT_VERSION" "NODE_VERSION" "PYTHON_VERSION" "MARIADB_VERSION")
   variables+=("DB_TYPE" "DB_HOST" "DB_ROOT_USERNAME" "DB_ROOT_PASSWORD")
-  variables+=("REPO_MODE" "REPO_URI" "REPO_SSH_KEY" "REPO_TOKEN")
+  variables+=("REPO_MODE" "REPO_URI" "REPO_SSH_KEY")
   variables+=("BENCH_VERSION" "FRAPPE_VERSION" "INSTALL_DIR")
   variables+=("INSTANCE" "APP_LIST" "SITE" "SITE_DB_NAME" "SITE_ADMIN_PASSWORD")
 

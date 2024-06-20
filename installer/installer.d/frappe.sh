@@ -50,8 +50,7 @@ install_bench() {
 }
 
 setup_repo() {
-  if [ "${REPO_MODE}" = "ssh" ]; then
-
+  if [ -f ${REPO_SSH_KEY}]; then
     if ! grep -iq "Host frappe-repo" ~/.ssh/config; then
       printf "\n%s\n%s\n%s\n%s\n%s\n" \
         "HOST frappe-repo" \
@@ -61,15 +60,11 @@ setup_repo() {
         " IdentityFile ${REPO_SSH_KEY}" |
         tee -a ~/.ssh/config >/dev/null  
     fi
-    
     REPO_ADDR=ssh://frappe-repo/frappe
-  fi
-
-  if [ "$REPO_MODE" = "https" ]; then
-    REPO_ADDR=https://$REPO_TOKEN@$REPO_URI/frappe
+  else
+    STATUS_MSG+=$(error "SSH key ${REPO_SSH_KEY} is missing")
   fi
   STATUS_MSG+=$(success "Setup Frappe repository")
-
 }
 
 create_instance() {
