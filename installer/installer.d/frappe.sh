@@ -17,7 +17,6 @@ confirm(){
 }
 
 install_playwright() {
-  playwright library
   sudo su -c "
     apt install --no-install-recommends -y \
         libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libxcomposite1 \
