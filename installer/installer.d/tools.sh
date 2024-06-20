@@ -43,6 +43,30 @@ install_lazygit() {
   fi
 }
 
+install_ohmyposh() {
+  clear
+  print_header "Install oh-my-posh over zsh"
+  
+  sudo su -c "
+    apt update &&
+    apt upgrade -y && 
+    apt install --no-install-recommends -y zsh &&
+    apt autoclean -y"
+  
+  sudo su -c "curl https://ohmyposh.dev/install.sh | bash -s"
+  local theme="catppuccin_frappe"
+  mkdir -p $HOME/.oh-my-posh &&
+    wget https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/${theme}.omp.json -O $HOME/.oh-my-posh/default.omp.json
+  
+  if ! grep -iq "oh-my-posh init zsh" ~/.zshrc; then  
+    printf "\n%s" \
+      "eval \"\$(oh-my-posh init zsh --config ~/.oh-my-posh/default.omp.json)\"" |
+      tee -a $HOME/.zshrc >/dev/null
+      chsh -s $(which zsh)
+  fi
+  STATUS_MSG+=$(success "Install oh-my-posh successful")
+}
+
 install_nvm() {
   clear_screen
   print_header "Install NVM"
