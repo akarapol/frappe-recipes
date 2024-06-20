@@ -39,6 +39,7 @@ OS_NAME=$(grep "^NAME=" /etc/os-release | cut -d'=' -f2 | tr -d '"')
 STATUS_MSG=
 TYPE=
 INSTALL_ITEM=
+X=
 
 # ************************************************************ #
 # MAIN FUNCTION                                                #
@@ -62,41 +63,49 @@ display_help() {
   printf "Usage: install.sh [OPTIONS] \n\n"
   printf "Arguments:\n"
   printf "  -h   Display this help message.\n"
+  printf "  -i   Install specific software (python, nvm, git).\n"
   printf "  -t   Setup type (dev, aio, app, db).\n"
-  printf "  -i   Install specific software (python, nvm, git).\n\n"
+  printf "  -x   Run specific function (update_system, install_lazygit, etc... ).\n\n"
   printf "Examples:\n"
   printf "  ./install.sh\n"  # Display help message
-  printf "  ./install.sh -t dev\n"  # Set up system in developer mode
   printf "  ./install.sh -i python\n"  # Install Python
+  printf "  ./install.sh -t dev\n"  # Set up system in developer mode
+  printf "  ./install.sh -x update_system\n"  # Install Python
 
-  warning "**Important:** Options -t (type) and -i (install) are mutually exclusive. You can only specify one at a time.\n\n"
+  warning "**Important:** Options -i (install) and -t (type) are mutually exclusive. You can only specify one at a time.\n\n"
 
   exit 0
 }
 
 # Process arguments using getopts
-while getopts ":ht:i:" opt; do
+while getopts ":hi:t:x:" opt; do
   case $opt in
     h)
       display_help
-      ;;
-    t)
-      TYPE="$OPTARG"
-      # Check if -i was already used
-      if [[ -n "$INSTALL_ITEM" ]]; then
-        printf "Error: Options -t and -i are mutually exclusive.\n" >&2
-        display_help
-        exit 1
-      fi
       ;;
     i)
       INSTALL_ITEM="$OPTARG"
       # Check if -m was already used
       if [[ -n "$TYPE" ]]; then
-        printf "Error: Options -t and -i are mutually exclusive.\n" >&2
+        printf "Error: Options -i and -t are mutually exclusive.\n" >&2
         display_help
         exit 1
       fi
+      ;;
+    t)
+      TYPE="$OPTARG"
+      # Check if -i was already used
+      if [[ -n "$INSTALL_ITEM" ]]; then
+        printf "Error: Options -i and -t are mutually exclusive.\n" >&2
+        display_help
+        exit 1
+      fi
+      ;;
+    x)
+      X="$OPTARG"
+      "$X"
+      clear_screen
+      exit 1
       ;;
     \?)
       printf "Invalid option: -$OPTARG\n" >&2
@@ -109,8 +118,8 @@ done
 shift $((OPTIND-1))
 
 # Validate if either mode or install item is provided
-if [[ -z "$TYPE" && -z "$INSTALL_ITEM" ]]; then
-  printf "Error: Missing argument. Specify either -t or -i.\n" >&2
+if [[ -z "$TYPE" && -z "$INSTALL_ITEM" && -z "$X" ]]; then
+  printf "Error: Missing argument. Specify either -i or -t or -x.\n" >&2
   display_help
   exit 1
 fi
@@ -122,7 +131,7 @@ if [[ -n "$TYPE" ]]; then
     dev)
       clear_screen
       STATUS_MSG=$(print_header "Setup Frappe Dev server")
-      update_system && install_lazygit
+      update_system
       install_library && install_git && install_nvm && install_python
       install_redis && install_mariadb
       install_bench && install_frappe
